@@ -6,16 +6,16 @@ namespace Biblioteca.Services
 {
 	public class EmprestimoService
 	{
-        private IRepository<ItemEstoque> estoqueRepository;
+        private readonly IRepository<ItemEstoque> _estoqueRepository;
 
         public EmprestimoService(IRepository<ItemEstoque> repository)
         {
-            estoqueRepository = repository;
+            _estoqueRepository = repository;
         }
 
         private ItemEstoque EncontrarItemEmEstoque(string titulo)
         {
-            ItemEstoque itemEmEstoque = estoqueRepository.GetAll().FirstOrDefault(i => i.Item.Titulo == titulo);
+            ItemEstoque itemEmEstoque = _estoqueRepository.GetAll().FirstOrDefault(i => i.Item.Titulo == titulo);
             return itemEmEstoque == null
                 ? throw new InvalidOperationException($"O item '{titulo}' não está cadastrado no estoque.")
                 : itemEmEstoque;

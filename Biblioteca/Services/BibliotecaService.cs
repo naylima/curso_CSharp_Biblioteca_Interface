@@ -6,16 +6,16 @@ namespace Biblioteca.Services
 {
 	public class BibliotecaService
 	{
-		private IRepository<ItemBiblioteca> bibliotecaRepository;
+		private readonly IRepository<ItemBiblioteca> _bibliotecaRepository;
 
         public BibliotecaService(IRepository<ItemBiblioteca> repository)
         {
-            bibliotecaRepository = repository;
+            _bibliotecaRepository = repository;
         }
 
         private bool ItemCadastrado(string titulo)
         {
-            return bibliotecaRepository
+            return _bibliotecaRepository
                 .GetAll()
                 .Any(i => string.Equals(i.Titulo, titulo, StringComparison.OrdinalIgnoreCase));
         }
@@ -27,7 +27,7 @@ namespace Biblioteca.Services
                 throw new InvalidOperationException($"O item '{item.Titulo}' já existe na biblioteca.");
             }
 
-            bibliotecaRepository.Add(item);
+            _bibliotecaRepository.Add(item);
         }
 
         public void RemoverItem(string titulo)
@@ -37,9 +37,9 @@ namespace Biblioteca.Services
                 throw new InvalidOperationException($"O item '{titulo}' não existe na biblioteca.");
             }
 
-            ItemBiblioteca item = bibliotecaRepository.GetAll().FirstOrDefault(i => i.Titulo == titulo);
+            ItemBiblioteca item = _bibliotecaRepository.GetAll().FirstOrDefault(i => i.Titulo == titulo);
 
-            bibliotecaRepository.Remove(item);
+            _bibliotecaRepository.Remove(item);
         }
     }
 }

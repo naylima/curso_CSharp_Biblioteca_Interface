@@ -6,16 +6,16 @@ namespace Biblioteca.Services
 {
 	public class EstoqueService
 	{
-        private IRepository<ItemEstoque> estoqueRepository;
+        private readonly IRepository<ItemEstoque> _estoqueRepository;
 
         public EstoqueService(IRepository<ItemEstoque> repository)
         {
-            estoqueRepository = repository;
+            _estoqueRepository = repository;
         }
 
         private bool ItemCadastrado(string titulo)
         {
-            return estoqueRepository
+            return _estoqueRepository
                 .GetAll()
                 .Any(i => string.Equals(i.Item.Titulo, titulo, StringComparison.OrdinalIgnoreCase));
         }
@@ -27,7 +27,7 @@ namespace Biblioteca.Services
                 throw new InvalidOperationException($"O item '{item.Item.Titulo}' já está cadastrado no estoque.");
             }
 
-            estoqueRepository.Add(item);
+            _estoqueRepository.Add(item);
         }
 
         public void RemoverItem(string titulo)
@@ -37,9 +37,9 @@ namespace Biblioteca.Services
                 throw new InvalidOperationException($"O item '{titulo}' não está cadastrado no estoque.");
             }
 
-            ItemEstoque item = estoqueRepository.GetAll().FirstOrDefault(i => i.Item.Titulo == titulo);
+            ItemEstoque item = _estoqueRepository.GetAll().FirstOrDefault(i => i.Item.Titulo == titulo);
 
-            estoqueRepository.Remove(item);
+            _estoqueRepository.Remove(item);
         }
     }
 }
